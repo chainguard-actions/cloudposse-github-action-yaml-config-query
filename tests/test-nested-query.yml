@@ -1,0 +1,39 @@
+name: Test nested YAML query
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          query: ".database"
+          config: |
+            database:
+              host: localhost
+              port: 5432
+              name: mydb
+      - name: Assert nested outputs are set
+        env:
+          HOST: ${{ steps.action.outputs.host }}
+          PORT: ${{ steps.action.outputs.port }}
+          NAME: ${{ steps.action.outputs.name }}
+        run: |
+          echo "host: $HOST"
+          echo "port: $PORT"
+          echo "name: $NAME"
+          if [ "$HOST" != "localhost" ]; then
+            echo "FAIL: expected host='localhost', got '$HOST'"
+            exit 1
+          fi
+          if [ "$PORT" != "5432" ]; then
+            echo "FAIL: expected port='5432', got '$PORT'"
+            exit 1
+          fi
+          if [ "$NAME" != "mydb" ]; then
+            echo "FAIL: expected name='mydb', got '$NAME'"
+            exit 1
+          fi
+          echo "PASS"

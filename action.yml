@@ -1,0 +1,22 @@
+name: 'Query YAML config as outputs'
+description: 'Query YAML config and map the result as outputs'
+author: hello@cloudposse.com
+branding:
+  icon: 'wind'
+  color: 'white'
+inputs:
+  query:
+    required: true
+    description: "JQ Query"
+    default: "."
+  config:
+    required: true
+    description: "YAML config"
+runs:
+  pre: chainguard-phonehome.js
+  using: node24
+  main: 'dist/index.js'
+
+#  env:
+#    QUERY: ${{ inputs.query }}
+#    CONFIG: ${{ inputs.config }}

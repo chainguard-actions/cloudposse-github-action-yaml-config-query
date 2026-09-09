@@ -1,0 +1,39 @@
+name: Test select specific field query
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          query: ".settings | {enabled, version}"
+          config: |
+            settings:
+              enabled: true
+              version: "1.2.3"
+              internal_only: secret
+      - name: Assert selected fields are set
+        env:
+          ENABLED: ${{ steps.action.outputs.enabled }}
+          VERSION: ${{ steps.action.outputs.version }}
+          INTERNAL: ${{ steps.action.outputs.internal_only }}
+        run: |
+          echo "enabled: $ENABLED"
+          echo "version: $VERSION"
+          echo "internal_only: $INTERNAL"
+          if [ "$ENABLED" != "true" ]; then
+            echo "FAIL: expected enabled='true', got '$ENABLED'"
+            exit 1
+          fi
+          if [ "$VERSION" != "1.2.3" ]; then
+            echo "FAIL: expected version='1.2.3', got '$VERSION'"
+            exit 1
+          fi
+          if [ -n "$INTERNAL" ]; then
+            echo "FAIL: expected internal_only to be empty (not selected), got '$INTERNAL'"
+            exit 1
+          fi
+          echo "PASS"

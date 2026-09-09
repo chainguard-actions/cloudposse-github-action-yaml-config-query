@@ -1,0 +1,38 @@
+name: Test default query (identity)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          query: "."
+          config: |
+            environment: production
+            replicas: 3
+            debug: false
+      - name: Assert all top-level keys are outputs
+        env:
+          ENVIRONMENT: ${{ steps.action.outputs.environment }}
+          REPLICAS: ${{ steps.action.outputs.replicas }}
+          DEBUG: ${{ steps.action.outputs.debug }}
+        run: |
+          echo "environment: $ENVIRONMENT"
+          echo "replicas: $REPLICAS"
+          echo "debug: $DEBUG"
+          if [ "$ENVIRONMENT" != "production" ]; then
+            echo "FAIL: expected environment='production', got '$ENVIRONMENT'"
+            exit 1
+          fi
+          if [ "$REPLICAS" != "3" ]; then
+            echo "FAIL: expected replicas='3', got '$REPLICAS'"
+            exit 1
+          fi
+          if [ "$DEBUG" != "false" ]; then
+            echo "FAIL: expected debug='false', got '$DEBUG'"
+            exit 1
+          fi
+          echo "PASS"
