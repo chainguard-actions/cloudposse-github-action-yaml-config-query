@@ -6,9 +6,9 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.0.1 | [`v1.0.1`](https://github.com/chainguard-actions/cloudposse-github-action-yaml-config-query/tree/v1.0.1) | [`8178e0c`](https://github.com/cloudposse/github-action-yaml-config-query/commit/8178e0c0d186f53de40f6bcf8e039f1e6a9aefc5) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v1.0.1 | [`v1.0.1`](https://github.com/chainguard-actions/cloudposse-github-action-yaml-config-query/tree/v1.0.1) | [`8178e0c`](https://github.com/cloudposse/github-action-yaml-config-query/commit/8178e0c0d186f53de40f6bcf8e039f1e6a9aefc5) | [`HARDENING.md`](https://github.com/chainguard-actions/cloudposse-github-action-yaml-config-query/blob/v1.0.1/HARDENING.md) |
 
 ## Privacy
 
